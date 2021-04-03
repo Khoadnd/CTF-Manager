@@ -25,12 +25,15 @@ public:
 	void nhapListThanhVien();
 	void addTailThanhVien(NodeThanhVien*);
 	NodeThanhVien* createNodeThanhVien(char*);
+
+	void xuatThanhVien();
 };
 
 struct NodeDoiThi
 {
 	char cTenDoiThi[100];
 	char cTenDoiTruong[100];
+	char cPassDoiTruong[100];
 	ListThanhVien ltvThanhVien;
 	NodeDoiThi* pNext;
 };
@@ -53,7 +56,13 @@ public:
 	void nhapListDoiThi();
 	void nhapDoiThi(); //nhap and return Node
 	void addTailDoiThi(NodeDoiThi*);
-	NodeDoiThi* createNodeDoiThi(char*, char*, ListThanhVien*);
+	NodeDoiThi* createNodeDoiThi(char*, char*, char*, ListThanhVien);
 
+	void xuatDoiThi();
+
+	int getSoLuongDoiThi();
+
+	bool isDoiExist(char*);
+	bool isEmpty();
 };
 

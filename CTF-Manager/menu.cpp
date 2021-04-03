@@ -4,13 +4,49 @@
 
 using namespace std;
 
-void enterToContinue()
+Menu::Menu(CTFEvent event)
+{
+	this->event = event;
+	this->iChoice = 0;
+}
+
+Menu::~Menu()
+{
+
+}
+
+void Menu::enterToContinue()
 {
 	system("pause");
 	system("cls");
 }
 
-void displayMainMenu()
+void Menu::adminPanel()
+{
+
+}
+
+void Menu::leaderPanel()
+{
+
+}
+
+void Menu::displayAdminPanel()
+{
+
+}
+
+void Menu::eventEditor()
+{
+
+}
+
+void Menu::displayLeaderPanel()
+{
+
+}
+
+void Menu::displayMainMenu()
 {
 	cout << "-----------------\n";
 	cout << "----Main menu----\n";
@@ -25,23 +61,65 @@ void displayMainMenu()
 	cout << "Nhap lua chon cua ban: ";
 }
 
-void menu()
+void Menu::setEvent(CTFEvent& event)
 {
+	this->event = event;
+}
+
+void Menu::menu()
+{
+	enterToContinue();
 	int iChoice;
 	while (1)
 	{
 		displayMainMenu();
 		cin >> iChoice;
+		cin.ignore();\
 
 		switch (iChoice)
 		{
 		case 1:
+			this->event.display();
+			break;
+
+		case 2:
+			this->event.xuatDoiThi();
+			break;
+
+		case 3:
+			this->event.xuatTop3();
+			break;
+
+		case 4:
+			this->event.addDoiThi();
+			break;
+
+		case 5:
+			char cTenDoi[100];
+			cout << "Nhap ten doi can kiem tra: ";
+			cin.getline(cTenDoi, 100);
+			if (this->event.isXRegistered(cTenDoi))
+				cout << "Da dang ky!\n";
+			else
+				cout << "Chua dang ky!\n";
+			break;
+
+		case 6:
+			break;
+
+		case 42069:
+			this->adminPanel();
+			break;
+
+		case 0:
+			exit(0);
 			break;
 
 		default:
 			cout << "Lua chon khong hop le!.\n";
-			enterToContinue();
 			break;
 		}
+
+		enterToContinue();
 	}
 }

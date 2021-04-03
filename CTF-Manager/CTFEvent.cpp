@@ -89,3 +89,127 @@ bool CTFEvent::setTriGiaGiaiThuong(unsigned long initTriGiaGiaiThuong)
 	this->ulTriGiaGiaiThuong = initTriGiaGiaiThuong;
 	return 1;
 }
+
+void CTFEvent::addDoiThi()
+{
+	this->ldtListDoiThi.nhapDoiThi();
+}
+
+void CTFEvent::xuatDoiThi()
+{
+	this->ldtListDoiThi.xuatDoiThi();
+}
+
+bool CTFEvent::isXRegistered(char* tenDoi)
+{
+	return this->ldtListDoiThi.isDoiExist(tenDoi);
+}
+
+void CTFEvent::xuatTop3()
+{
+	if (this->isListDoiThiEmpty())
+	{
+		cout << "Chua co doi tham gia!\n";
+		return;
+	}
+
+	int soLuong = this->ldtListDoiThi.getSoLuongDoiThi();
+
+	if (soLuong < 3)
+	{
+		if (soLuong == 1)
+		{
+			cout << "Top 1:\n";
+			this->xuatDoiThi();
+
+			return;
+		}
+
+		if (soLuong == 2)
+		{
+			
+
+			xuatList(l);
+			return;
+		}
+	}
+
+	Node* p = l.pHead->pNext;
+
+	int st = l.pHead->info.Diem, nd = 0, rd = 0;
+
+	while (p != NULL)
+	{
+		if (st < p->info.Diem)
+		{
+			rd = nd;
+			nd = st;
+			st = p->info.Diem;
+			p = p->pNext;
+			continue;
+		}
+
+		if (nd < p->info.Diem)
+		{
+			rd = nd;
+			nd = p->info.Diem;
+			p = p->pNext;
+			continue;
+		}
+
+		if (rd < p->info.Diem)
+			rd = p->info.Diem;
+
+		p = p->pNext;
+
+	}
+
+	p = l.pHead;
+
+	while (p != NULL)
+	{
+		if (p->info.Diem == st)
+		{
+			cout << "Top 1:\n";
+			xuatDoi(p);
+			break;
+		}
+		p = p->pNext;
+	}
+
+	p = l.pHead;
+	while (p != NULL)
+	{
+		if (p->info.Diem == nd)
+		{
+			cout << "\nTop 2:\n";
+			xuatDoi(p);
+			break;
+		}
+		p = p->pNext;
+	}
+
+	p = l.pHead;
+	while (p != NULL)
+	{
+		if (p->info.Diem == rd)
+		{
+			cout << "\nTop 3:\n";
+			xuatDoi(p);
+			break;
+		}
+		p = p->pNext;
+	}
+}
+
+int CTFEvent::getSoLuongDoiThamGia()
+{
+	return this->ldtListDoiThi.getSoLuongDoiThi();
+}
+
+bool CTFEvent::isListDoiThiEmpty()
+{
+	if (this->ldtListDoiThi.isEmpty())
+		return 1;
+	return 0;
+}

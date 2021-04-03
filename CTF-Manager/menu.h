@@ -1,15 +1,29 @@
 #pragma once
+#include "CTFEvent.h"
 
-void menu();
+class Menu
+{
+private:
+	CTFEvent event;
+	int iChoice;
 
-void leaderPanel();
-void adminPanel();
+public:
+	Menu(CTFEvent = {});
+	~Menu();
 
-void displayLeaderPanel();
-void displayAdminPanel();
+	void setEvent(CTFEvent&);
+	void menu();
 
-void displayMainMenu();
+	void leaderPanel();
+	void adminPanel();
 
-void enterToContinue();
+	void displayLeaderPanel();
+	void displayAdminPanel();
 
-void eventEditor();
+	void displayMainMenu();
+
+	void enterToContinue();
+
+	void eventEditor();
+};
+

@@ -24,6 +24,14 @@ public:
 	bool setNgayToChuc(Date);
 	bool setTriGiaGiaiThuong(unsigned long);
 	
+	void addDoiThi();
+	
+	void xuatDoiThi();
+	void xuatTop3();
 
+	int getSoLuongDoiThamGia();
+
+	bool isXRegistered(char *);
+	bool isListDoiThiEmpty();
 };
 
