@@ -8,6 +8,7 @@ CTFEvent::CTFEvent()
 {
 	strcpy_s(cTenCuocThi, "");
 	strcpy_s(cTenNhaToChuc, "");
+	strcpy_s(cFormat, "");
 	dNgayToChuc.setDate();
 	ulTriGiaGiaiThuong = 0;
 }
@@ -26,19 +27,31 @@ void CTFEvent::display()
 	cout << "Ngay dien ra: ";
 	this->dNgayToChuc.xuat();
 	cout << "Giai thuong: " << this->ulTriGiaGiaiThuong << endl;
+	cout << "Format: ";
+	puts(this->cFormat);
 }
 
-void CTFEvent::setEvent(char* initTenCuocThi, char* initTenNhaToChuc, Date initDate, unsigned long initTriGiaGiaiThuong)
+void CTFEvent::setEvent(char* initTenCuocThi, char* initTenNhaToChuc, Date initDate, unsigned long initTriGiaGiaiThuong, char* initFormat)
 {
 	this->setTenCuocThi(initTenCuocThi);
 	this->setTenNhaToChuc(initTenNhaToChuc);
 	this->setNgayToChuc(initDate);
 	this->setTriGiaGiaiThuong(initTriGiaGiaiThuong);
+	this->setFormat(initFormat);
+}
+
+bool CTFEvent::isFormat(char* Format)
+{
+	char t1[] = "Jeopardy";
+	char t2[] = "Attack-Defense";
+	if (strcmp(Format, t1) == 0 || strcmp(Format, t2) == 0)
+		return 1;
+	return 0;
 }
 
 void CTFEvent::initEvent()
 {
-	char initTenCuocThi[100], initTenNhaToChuc[100];
+	char initTenCuocThi[100], initTenNhaToChuc[100], initFormat[15];
 	Date initNgayToChuc;
 	unsigned long initTriGia;
 	cout << "Nhap ten cuoc thi: ";
@@ -53,7 +66,16 @@ void CTFEvent::initEvent()
 		cout << "Nhap tri gia giai thuong: ";
 		cin >> initTriGia;
 	} while (!this->setTriGiaGiaiThuong(initTriGia));
-	this->setEvent(initTenCuocThi, initTenNhaToChuc, initNgayToChuc, initTriGia);
+
+	cin.ignore();
+
+	do
+	{
+		cout << "Nhap format: ";
+		cin.getline(initFormat, 15);
+	} while (!this->isFormat(initFormat));
+
+	this->setEvent(initTenCuocThi, initTenNhaToChuc, initNgayToChuc, initTriGia, initFormat);
 }
 
 bool CTFEvent::setTenCuocThi(char* initTenCuocThi)
@@ -63,6 +85,18 @@ bool CTFEvent::setTenCuocThi(char* initTenCuocThi)
 
 	strcpy_s(this->cTenCuocThi, initTenCuocThi);
 	return 1;
+}
+
+void CTFEvent::setFormat(char* initFormat)
+{
+	while (!this->isFormat(initFormat))
+	{
+		cout << "Format khong hop le, vui long nhap lai." << endl;
+		cout << "Format: ";
+		cin.getline(initFormat, 15);
+	}
+
+	strcpy_s(this->cFormat, initFormat);
 }
 
 bool CTFEvent::setTenNhaToChuc(char* initTenNhaToChuc)
@@ -127,79 +161,15 @@ void CTFEvent::xuatTop3()
 
 		if (soLuong == 2)
 		{
-			
+			this->ldtListDoiThi.sortDiem();
 
-			xuatList(l);
+			this->xuatDoiThi();
 			return;
 		}
 	}
 
-	Node* p = l.pHead->pNext;
-
-	int st = l.pHead->info.Diem, nd = 0, rd = 0;
-
-	while (p != NULL)
-	{
-		if (st < p->info.Diem)
-		{
-			rd = nd;
-			nd = st;
-			st = p->info.Diem;
-			p = p->pNext;
-			continue;
-		}
-
-		if (nd < p->info.Diem)
-		{
-			rd = nd;
-			nd = p->info.Diem;
-			p = p->pNext;
-			continue;
-		}
-
-		if (rd < p->info.Diem)
-			rd = p->info.Diem;
-
-		p = p->pNext;
-
-	}
-
-	p = l.pHead;
-
-	while (p != NULL)
-	{
-		if (p->info.Diem == st)
-		{
-			cout << "Top 1:\n";
-			xuatDoi(p);
-			break;
-		}
-		p = p->pNext;
-	}
-
-	p = l.pHead;
-	while (p != NULL)
-	{
-		if (p->info.Diem == nd)
-		{
-			cout << "\nTop 2:\n";
-			xuatDoi(p);
-			break;
-		}
-		p = p->pNext;
-	}
-
-	p = l.pHead;
-	while (p != NULL)
-	{
-		if (p->info.Diem == rd)
-		{
-			cout << "\nTop 3:\n";
-			xuatDoi(p);
-			break;
-		}
-		p = p->pNext;
-	}
+	this->ldtListDoiThi.sortDiem();
+	this->ldtListDoiThi.xuatDoiThi(4);
 }
 
 int CTFEvent::getSoLuongDoiThamGia()
@@ -212,4 +182,20 @@ bool CTFEvent::isListDoiThiEmpty()
 	if (this->ldtListDoiThi.isEmpty())
 		return 1;
 	return 0;
+}
+
+void CTFEvent::setDiemChoDoi(char* tenDoi, unsigned int diem)
+{
+	if (this->isXRegistered(tenDoi))
+		this->ldtListDoiThi.setDiem(tenDoi, diem);
+	else
+		cout << "Doi chua dang ky!";
+}
+
+char* CTFEvent::getPassword(char* tenDoi)
+{
+	if (this->isXRegistered(tenDoi))
+		return this->ldtListDoiThi.getPassword(tenDoi);
+	else
+		return NULL;
 }

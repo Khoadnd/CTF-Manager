@@ -71,6 +71,7 @@ NodeDoiThi* ListDoiThi::createNodeDoiThi(char* initTenDoiThi, char* initTenDoiTr
 	strcpy_s(p->cTenDoiTruong, initTenDoiTruong);
 	strcpy_s(p->cPassDoiTruong, initPassword);
 	p->ltvThanhVien = initListThanhVien;
+	p->diem = 0;
 	p->pNext = NULL;
 	return p;
 }
@@ -129,7 +130,7 @@ void ListThanhVien::xuatThanhVien()
 	}
 }
 
-void ListDoiThi::xuatDoiThi()
+void ListDoiThi::xuatDoiThi(int d)
 {
 	NodeDoiThi* p = this->listDoi.pHead;
 
@@ -142,10 +143,13 @@ void ListDoiThi::xuatDoiThi()
 		puts(p->cTenDoiThi);
 		cout << "Doi truong: ";
 		puts(p->cTenDoiTruong);
+		cout << "Diem: " << p->diem << endl;
 		cout << "Cac thanh vien trong nhom:\n";
 		p->ltvThanhVien.xuatThanhVien();
 
 		p = p->pNext;
+		if (i == d)
+			break;
 	}
 }
 
@@ -166,17 +170,12 @@ int ListDoiThi::getSoLuongDoiThi()
 
 bool ListDoiThi::isDoiExist(char* tenDoi)
 {
-	NodeDoiThi* p = this->listDoi.pHead;
+	NodeDoiThi* p = this->getDoiThi(tenDoi);
 
-	while (p != NULL)
-	{
-		if (strcmp(p->cTenDoiThi, tenDoi) == 0)
-			return 1;
+	if (p == NULL)
+		return 0;
 
-		p = p->pNext;
-	}
-
-	return 0;
+	return 1;
 }
 
 bool ListDoiThi::isEmpty()
@@ -185,4 +184,60 @@ bool ListDoiThi::isEmpty()
 		return 1;
 
 	return 0;
+}
+
+void ListDoiThi::swap(NodeDoiThi*& p, NodeDoiThi*& q)
+{
+	NodeDoiThi* t = this->createNodeDoiThi(p->cTenDoiThi, p->cTenDoiTruong, p->cPassDoiTruong, p->ltvThanhVien);
+	t->diem = p->diem;
+	strcpy_s(p->cTenDoiThi, q->cTenDoiThi);
+	strcpy_s(p->cTenDoiTruong, q->cTenDoiTruong);
+	strcpy_s(p->cPassDoiTruong, q->cPassDoiTruong);
+	p->diem = q->diem;
+	p->ltvThanhVien = q->ltvThanhVien;
+
+	strcpy_s(q->cTenDoiThi, t->cTenDoiThi);
+	strcpy_s(q->cTenDoiTruong, t->cTenDoiTruong);
+	strcpy_s(q->cPassDoiTruong, t->cPassDoiTruong);
+	q->diem = t->diem;
+	q->ltvThanhVien = t->ltvThanhVien;	
+}
+
+void ListDoiThi::sortDiem()
+{
+	for (NodeDoiThi* p = this->listDoi.pHead; p != this->listDoi.pTail; p = p->pNext)
+	{
+		NodeDoiThi* max = p;
+		for (NodeDoiThi* q = p->pNext; q != NULL; q = q->pNext)
+			if (q->diem > max->diem)
+				max = q;
+		this->swap(max, p);
+	}
+}
+
+NodeDoiThi* ListDoiThi::getDoiThi(char* tenDoi)
+{
+	NodeDoiThi* p = this->listDoi.pHead;
+
+	while (p != NULL)
+	{
+		if (strcmp(p->cTenDoiThi, tenDoi) == 0)
+			return p;
+		p = p->pNext;
+	}
+	return NULL;
+}
+
+void ListDoiThi::setDiem(char* tenDoi, unsigned int diem)
+{
+	NodeDoiThi* p = this->getDoiThi(tenDoi);
+
+	p->diem = diem;
+}
+
+char* ListDoiThi::getPassword(char* tenDoi)
+{
+	NodeDoiThi* p = this->getDoiThi(tenDoi);
+
+	return p->cPassDoiTruong;
 }

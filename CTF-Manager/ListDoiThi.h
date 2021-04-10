@@ -34,6 +34,7 @@ struct NodeDoiThi
 	char cTenDoiThi[100];
 	char cTenDoiTruong[100];
 	char cPassDoiTruong[100];
+	unsigned int diem;
 	ListThanhVien ltvThanhVien;
 	NodeDoiThi* pNext;
 };
@@ -57,12 +58,19 @@ public:
 	void nhapDoiThi(); //nhap and return Node
 	void addTailDoiThi(NodeDoiThi*);
 	NodeDoiThi* createNodeDoiThi(char*, char*, char*, ListThanhVien);
+	NodeDoiThi* getDoiThi(char*);
 
-	void xuatDoiThi();
+	void xuatDoiThi(int = 0);
+
+	void setDiem(char*, unsigned int);
+
+	void sortDiem();
 
 	int getSoLuongDoiThi();
+	char* getPassword(char*);
 
 	bool isDoiExist(char*);
 	bool isEmpty();
+	void swap(NodeDoiThi*&, NodeDoiThi*&);
 };
 

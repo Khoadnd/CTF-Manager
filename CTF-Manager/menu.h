@@ -19,11 +19,11 @@ public:
 
 	void displayLeaderPanel();
 	void displayAdminPanel();
-
+	void displayEventEditor();
 	void displayMainMenu();
 
 	void enterToContinue();
 
-	void eventEditor();
+	void eventEditor(bool&);
 };
 
