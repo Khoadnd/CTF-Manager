@@ -241,3 +241,50 @@ char* ListDoiThi::getPassword(char* tenDoi)
 
 	return p->cPassDoiTruong;
 }
+
+bool ListThanhVien::isMemberExist(char* tenThanhVien)
+{
+	NodeThanhVien* p = this->ltvListThanhVien.pHead;
+
+	while (p != NULL)
+	{
+		if (strcmp(p->cTenThanhVien, tenThanhVien) == 0)
+			return 1;
+		p = p->pNext;
+	}
+
+	return 0;
+}
+
+bool isMemberExistInNode(NodeDoiThi* doiThi, char* tenThanhVien)
+{
+	return doiThi->ltvThanhVien.isMemberExist(tenThanhVien);
+}
+
+void ListThanhVien::removeThanhVien(char* tenThanhVien)
+{
+	NodeThanhVien* p = this->ltvListThanhVien.pHead;
+	NodeThanhVien* bp = NULL;
+
+	while (p != NULL)
+	{
+		if (strcmp(p->cTenThanhVien, tenThanhVien) == 0)
+		{
+			if (this->ltvListThanhVien.pHead == p)
+			{
+				this->ltvListThanhVien.pHead = p->pNext;
+				delete p;
+				break;
+			}
+
+			bp->pNext = p->pNext;
+			if (this->ltvListThanhVien.pTail == p)
+				this->ltvListThanhVien.pTail = bp;
+			delete p;
+			break;
+		}
+
+		bp = p;
+		p = p->pNext;
+	}
+}

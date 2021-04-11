@@ -26,6 +26,10 @@ public:
 	void addTailThanhVien(NodeThanhVien*);
 	NodeThanhVien* createNodeThanhVien(char*);
 
+	bool isMemberExist(char*);
+
+	void removeThanhVien(char*);
+
 	void xuatThanhVien();
 };
 
@@ -44,6 +48,8 @@ struct ListDoi
 	NodeDoiThi* pHead;
 	NodeDoiThi* pTail;
 };
+
+bool isMemberExistInNode(NodeDoiThi*, char*);
 
 class ListDoiThi
 {

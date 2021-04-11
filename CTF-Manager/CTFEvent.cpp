@@ -199,3 +199,13 @@ char* CTFEvent::getPassword(char* tenDoi)
 	else
 		return NULL;
 }
+
+bool CTFEvent::isMemberRegistered(NodeDoiThi* doiThi, char* tenThanhVien)
+{
+	return isMemberExistInNode(doiThi, tenThanhVien);
+}
+
+NodeDoiThi* CTFEvent::getDoiThiTrongList(char* tenDoi)
+{
+	return this->ldtListDoiThi.getDoiThi(tenDoi);
+}

@@ -38,5 +38,8 @@ public:
 	bool isXRegistered(char *);
 	bool isListDoiThiEmpty();
 	bool isFormat(char*);
+	bool isMemberRegistered(NodeDoiThi*, char*);
+
+	NodeDoiThi* getDoiThiTrongList(char*);
 };
 

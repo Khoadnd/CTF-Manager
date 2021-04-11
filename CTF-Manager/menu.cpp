@@ -15,7 +15,7 @@ Menu::~Menu()
 
 }
 
-void Menu::displayAdminPanel()
+void Menu::displayAdminPanel() //Not yet!
 {
 	cout << "1) Chinh sua cuoc thi.\n"; //Done
 	cout << "2) Set diem cho doi X.\n"; //Done
@@ -27,13 +27,14 @@ void Menu::displayAdminPanel()
 	cout << "Nhap lua chon cua ban: ";
 }
 
-void Menu::displayLeaderPanel()
+void Menu::displayLeaderPanel() //Done
 {
-	cout << "1) Doi ten nhom.\n"; //Completed
-	cout << "2) Xoa thanh vien.\n"; //Not yet
-	cout << "3) Them thanh vien.\n"; //Completed
-	cout << "4) Doi mat khau.\n"; //Not yet
-	cout << "0) De quay lai main menu.\n\n"; //Completed
+	cout << "1) Doi ten nhom.\n"; 
+	cout << "2) Xem thanh vien trong doi.\n";
+	cout << "3) Xoa thanh vien.\n"; 
+	cout << "4) Them thanh vien.\n";
+	cout << "5) Doi mat khau.\n";
+	cout << "0) De quay lai main menu.\n\n"; 
 	cout << "Nhap lua chon cua ban: ";
 }
 
@@ -48,7 +49,7 @@ void Menu::displayEventEditor() //Done
 	cout << "Nhap lua chon cua ban: ";
 }
 
-void Menu::displayMainMenu() //Not yet
+void Menu::displayMainMenu() //Done
 {
 	cout << "-----------------\n";
 	cout << "----Main menu----\n";
@@ -58,7 +59,7 @@ void Menu::displayMainMenu() //Not yet
 	cout << "3) Xem top 3 doi thi.\n"; //Done
 	cout << "4) Dang ky tham gia.\n"; //Done
 	cout << "5) Kiem tra nhom X da tham gia chua.\n"; //Done
-	cout << "6) Quan ly nhom.\n";//Not yet
+	cout << "6) Quan ly nhom.\n"; //Done
 	cout << "0) Thoat.\n\n";
 	cout << "Nhap lua chon cua ban: ";
 }
@@ -69,8 +70,13 @@ void Menu::enterToContinue()
 	system("cls");
 }
 
-void Menu::adminPanel()
+void Menu::adminPanel() //still working on
 {
+	char password[100], password_[] = "admin";
+	cout << "Nhap password: ";
+	cin.getline(password, 100);
+	if (strcmp(password, password_) != 0)
+		return;
 	bool exit = 0;
 	int iChoice;
 
@@ -136,7 +142,7 @@ void Menu::adminPanel()
 	} while (!exit);
 }
 
-void Menu::leaderPanel()
+void Menu::leaderPanel() //Done
 {
 	if (this->event.isListDoiThiEmpty())
 	{
@@ -145,7 +151,6 @@ void Menu::leaderPanel()
 	}
 	char tenDoi[100];
 	cout << "Nhap ten doi: ";
-	cin.ignore();
 	cin.getline(tenDoi, 100);
 
 	if (!event.isXRegistered(tenDoi))
@@ -170,32 +175,68 @@ void Menu::leaderPanel()
 	}
 	//EndAuth
 
+	system("cls");
+
 	bool exit = 0;
 	int iChoice;
 
+	NodeDoiThi* doiThi = this->event.getDoiThiTrongList(tenDoi);
+
 	do
 	{
+		enterToContinue();
 		displayLeaderPanel();
 		cin >> iChoice;
-
+		cin.ignore();
 		switch (iChoice)
 		{
 		case 1: //Doi ten nhom
-			event.leaderChangeTeamName(tenDoi);
+			char initTenDoi[100], initTenDoi2[100];
+			cout << "Nhap ten doi moi: ";
+			cin.getline(initTenDoi, 100);
+			cout << "Nhap lai ten doi moi: ";
+			cin.getline(initTenDoi2, 100);
+			if (strcmp(initTenDoi, initTenDoi2) != 0)
+				cout << "Ten doi khong trung khop!" << endl;
+			else
+				strcpy_s(doiThi->cTenDoiThi, initTenDoi);
 			break;
 
-		case 2: //Xoa thanh vien
-			cin.ignore();
-			event.removeMemberFrom(tenDoi);
+		case 2:
+			doiThi->ltvThanhVien.xuatThanhVien();
 			break;
 
-		case 3: //Them thanh vien
-			cin.ignore();
-			event.addMemberTo(tenDoi);
+		case 3: //Xoa thanh vien
+			char memberToRemove[100];
+			cout << "Nhap ten thanh vien can xoa: ";
+			cin.getline(memberToRemove, 100);
+			if (!this->event.isMemberRegistered(doiThi, memberToRemove))
+				cout << "Ten thanh vien khong hop le!";
+			doiThi->ltvThanhVien.removeThanhVien(memberToRemove);
 			break;
 
-		case 4: //Doi mat khau
-			event.leaderChangePassword(tenDoi);
+		case 4: //Them thanh vien
+			char memberToAdd[100];
+			cout << "Nhap ten thanh vien can them: ";
+			cin.getline(memberToAdd, 100);
+			if (this->event.isMemberRegistered(doiThi, memberToAdd))
+			{
+				cout << "Thanh vien da dang ky!" << endl;
+				break;
+			}
+			doiThi->ltvThanhVien.addTailThanhVien(doiThi->ltvThanhVien.createNodeThanhVien(memberToAdd));
+			break;
+
+		case 5: //Doi mat khau
+			char newPassword[100], newPasswordConfirm[100];
+			cout << "Nhap password moi: ";
+			cin.getline(newPassword, 100);
+			cout << "Nhap lai password moi: ";
+			cin.getline(newPasswordConfirm, 100);
+			if (strcmp(newPassword, newPasswordConfirm) != 0)
+				cout << "Password khong trung khop!" << endl;
+			else
+				strcpy_s(doiThi->cPassDoiTruong, newPassword);
 			break;
 
 		default:
@@ -318,6 +359,7 @@ void Menu::menu()
 			break;
 
 		case 6:
+			this->leaderPanel();
 			break;
 
 		case 42069:
