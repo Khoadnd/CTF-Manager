@@ -76,7 +76,7 @@ void Menu::enterToContinue()
 	system("cls");
 }
 
-void Menu::adminPanel() //still working on
+void Menu::adminPanel() // Done
 {
 	char password[100], password_[] = "admin";
 	cout << "Nhap password: ";
@@ -109,7 +109,7 @@ void Menu::adminPanel() //still working on
 			}
 
 			this->event.xuatTenDoiThi();
-
+			cout << endl;
 			cin.ignore();
 			do
 			{
@@ -484,6 +484,8 @@ void Menu::menu()
 			}
 			this->event.setStarted(0);
 			start->join();
+			delete start;
+			start = NULL;
 			break;
 		}
 

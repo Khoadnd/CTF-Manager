@@ -53,14 +53,19 @@ void ListThanhVien::nhapListThanhVien()
 
 	while (1)
 	{
-		cout << "Nhap ten thanh vien thu " << i++ << " (0 de ket thuc): ";
-		cin.getline(initThanhVien, 100);
+		do
+		{
+			cout << "Nhap ten thanh vien thu " << i << " (0 de ket thuc): ";
+			cin.getline(initThanhVien, 100);
+		} while (strcmp(initThanhVien, "") == 0);
 
 		if (strcmp(initThanhVien, "0") == 0)
 			break;
 
 		NodeThanhVien* p = this->createNodeThanhVien(initThanhVien);
 		this->addTailThanhVien(p);
+
+		i++;
 	}
 }
 
@@ -81,12 +86,24 @@ void ListDoiThi::nhapDoiThi()
 	char initTenDoiThi[100], initTenDoiTruong[100], initPassword[100];
 	ListThanhVien initListThanhVien;
 
-	cout << "Nhap ten doi thi: ";
-	cin.getline(initTenDoiThi, 100);
-	cout << "Nhap ten doi truong: ";
-	cin.getline(initTenDoiTruong, 100);
-	cout << "Nhap password: ";
-	cin.getline(initPassword, 100);
+	do
+	{
+		cout << "Nhap ten doi thi: ";
+		cin.getline(initTenDoiThi, 100);
+	} while (strcmp(initTenDoiThi, "") == 0);
+
+	do
+	{
+		cout << "Nhap ten doi truong: ";
+		cin.getline(initTenDoiTruong, 100);
+	} while (strcmp(initTenDoiTruong, "") == 0);
+
+	do
+	{
+		cout << "Nhap password: ";
+		cin.getline(initPassword, 100);
+	} while (strcmp(initPassword, "") == 0);
+
 	initListThanhVien.nhapListThanhVien();
 
 	this->addTailDoiThi(this->createNodeDoiThi(initTenDoiThi, initTenDoiTruong, initPassword, initListThanhVien));

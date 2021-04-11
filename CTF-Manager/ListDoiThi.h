@@ -61,7 +61,7 @@ public:
 	~ListDoiThi();
 
 	void nhapListDoiThi();
-	void nhapDoiThi(); //nhap and return Node
+	void nhapDoiThi(); 
 	void addTailDoiThi(NodeDoiThi*);
 	NodeDoiThi* createNodeDoiThi(char*, char*, char*, ListThanhVien);
 	NodeDoiThi* getDoiThi(char*);
