@@ -45,13 +45,13 @@ Chương trình gồm 2 menu chính:
 
 6. Đội trưởng quản lý nhóm
 >##### leaderPanel
-    >>- Yêu cầu: tên nhóm và mật khẩu của đội trưởng.
-    >>- Có thể thay đổi:
-    >>    - Tên nhóm
-    >>    - Xem thành viên trong đội
-    >>    - Xóa thành viên
-    >>    - Thêm thành viên
-    >>    - Đổi mật khẩu
+>>- Yêu cầu: tên nhóm và mật khẩu của đội trưởng.
+>>- Có thể thay đổi:
+>>    - Tên nhóm
+>>    - Xem thành viên trong đội
+>>    - Xóa thành viên
+>>    - Thêm thành viên
+>>    - Đổi mật khẩu
         
 #### Admin Panel
 
