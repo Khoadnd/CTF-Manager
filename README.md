@@ -47,11 +47,11 @@ Chương trình gồm 2 menu chính:
 >##### leaderPanel
     >>- Yêu cầu: tên nhóm và mật khẩu của đội trưởng.
     >>- Có thể thay đổi:
-        - Tên nhóm
-        - Xem thành viên trong đội
-        - Xóa thành viên
-        - Thêm thành viên
-        - Đổi mật khẩu
+    >>    - Tên nhóm
+    >>    - Xem thành viên trong đội
+    >>    - Xóa thành viên
+    >>    - Thêm thành viên
+    >>    - Đổi mật khẩu
         
 #### Admin Panel
 
@@ -61,10 +61,10 @@ Chương trình gồm 2 menu chính:
 >Truy cập tới __EventEditorPanel__  
 > ##### EventEditorPanel
 >> 1. Đổi tên cuộc thi
-> 2. Đổi tên nhà tổ chức/tài trợ
-> 3. Đổi ngày tổ chức cuộc thi
-> 4. Thay đổi giá trị giải thưởng
-> 5. Thay đổi format cuộc thi __theo Format table ở trên__
+>> 2. Đổi tên nhà tổ chức/tài trợ
+>> 3. Đổi ngày tổ chức cuộc thi
+>> 4. Thay đổi giá trị giải thưởng
+>> 5. Thay đổi format cuộc thi __theo Format table ở trên__
 
 2. Chỉnh sửa điểm cho đội X
 
