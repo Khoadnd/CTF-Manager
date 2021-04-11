@@ -1,6 +1,7 @@
 #include "CTFEvent.h"
 #include <iostream>
 #include <string.h>
+#include <Windows.h>
 
 using namespace std;
 
@@ -11,6 +12,7 @@ CTFEvent::CTFEvent()
 	strcpy_s(cFormat, "");
 	dNgayToChuc.setDate();
 	ulTriGiaGiaiThuong = 0;
+	started = 0;
 }
 
 CTFEvent::~CTFEvent()
@@ -208,4 +210,44 @@ bool CTFEvent::isMemberRegistered(NodeDoiThi* doiThi, char* tenThanhVien)
 NodeDoiThi* CTFEvent::getDoiThiTrongList(char* tenDoi)
 {
 	return this->ldtListDoiThi.getDoiThi(tenDoi);
+}
+
+void CTFEvent::xuatTenDoiThi()
+{
+	this->ldtListDoiThi.xuatTenDoi();
+}
+
+void CTFEvent::removeDoi(char* tenDoi)
+{
+	this->ldtListDoiThi.removeDoi(tenDoi);
+}
+
+bool CTFEvent::isStarted()
+{
+	return this->started;
+}
+
+void CTFEvent::start()
+{
+	if (this->isListDoiThiEmpty())
+	{
+		cout << "Chua co doi tham gia!";
+		return;
+	}
+
+	while (this->started == 1)
+	{
+		this->ldtListDoiThi.randomDiem();
+		Sleep(2000);
+	}
+}
+
+void CTFEvent::stop()
+{
+	this->started = 0;
+}
+
+void CTFEvent::setStarted(bool state)
+{
+	this->started = state;
 }

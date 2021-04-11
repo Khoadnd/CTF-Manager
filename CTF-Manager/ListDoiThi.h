@@ -67,6 +67,9 @@ public:
 	NodeDoiThi* getDoiThi(char*);
 
 	void xuatDoiThi(int = 0);
+	void xuatTenDoi();
+
+	void removeDoi(char*);
 
 	void setDiem(char*, unsigned int);
 
@@ -78,5 +81,7 @@ public:
 	bool isDoiExist(char*);
 	bool isEmpty();
 	void swap(NodeDoiThi*&, NodeDoiThi*&);
+
+	void randomDiem();
 };
 

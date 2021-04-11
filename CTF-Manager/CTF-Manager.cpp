@@ -11,8 +11,7 @@ int main()
 	event.initEvent();
 	event.display();
 
-	Menu* menu = new Menu;
-	menu->setEvent(event);
+	Menu* menu = new Menu(event);
 
 	menu->menu();
 

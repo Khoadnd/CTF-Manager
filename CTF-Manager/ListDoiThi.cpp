@@ -288,3 +288,53 @@ void ListThanhVien::removeThanhVien(char* tenThanhVien)
 		p = p->pNext;
 	}
 }
+
+void ListDoiThi::xuatTenDoi()
+{
+	NodeDoiThi* p = this->listDoi.pHead;
+
+	while (p != NULL)
+	{
+		cout << p->cTenDoiThi << '\t';
+		p = p->pNext;
+	}
+}
+
+void ListDoiThi::removeDoi(char* tenDoi)
+{
+	NodeDoiThi* p = this->listDoi.pHead;
+	NodeDoiThi* bp = NULL;
+
+	while (p != NULL)
+	{
+		if (strcmp(p->cTenDoiThi, tenDoi) == 0)
+		{
+			if (this->listDoi.pHead == p)
+			{
+				this->listDoi.pHead = p->pNext;
+				delete p;
+				break;
+			}
+
+			bp->pNext = p->pNext;
+			if (this->listDoi.pTail = p)
+				this->listDoi.pTail = bp;
+			delete p;
+			break;
+		}
+
+		bp = p;
+		p = p->pNext;
+	}
+}
+
+void ListDoiThi::randomDiem()
+{
+	NodeDoiThi* p = this->listDoi.pHead;
+
+	while (p != NULL)
+	{
+		p->diem = rand() % (10001);
+		p = p->pNext;
+	}
+}

@@ -15,6 +15,7 @@ public:
 	void menu();
 
 	void leaderPanel();
+	void leaderPanel_(NodeDoiThi*&);
 	void adminPanel();
 
 	void displayLeaderPanel();

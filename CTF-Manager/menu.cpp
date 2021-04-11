@@ -1,6 +1,7 @@
 #include "menu.h"
 
 #include <iostream>
+#include <thread>
 
 using namespace std;
 
@@ -15,14 +16,14 @@ Menu::~Menu()
 
 }
 
-void Menu::displayAdminPanel() //Not yet!
+void Menu::displayAdminPanel() //Done
 {
-	cout << "1) Chinh sua cuoc thi.\n"; //Done
-	cout << "2) Set diem cho doi X.\n"; //Done
-	cout << "3) Xoa doi thi X.\n";// Not yet
-	cout << "4) Xem thong tin cuoc thi.\n"; //Done
-	cout << "5) Xuat danh sach doi thi.\n"; //Done
-	cout << "6) Quan ly doi thi.\n"; //Not yet
+	cout << "1) Chinh sua cuoc thi.\n";
+	cout << "2) Set diem cho doi X.\n"; 
+	cout << "3) Xoa doi thi X.\n";
+	cout << "4) Xem thong tin cuoc thi.\n"; 
+	cout << "5) Xuat danh sach doi thi.\n";
+	cout << "6) Quan ly doi thi.\n";
 	cout << "0) De quay lai main menu.\n\n";
 	cout << "Nhap lua chon cua ban: ";
 }
@@ -54,12 +55,17 @@ void Menu::displayMainMenu() //Done
 	cout << "-----------------\n";
 	cout << "----Main menu----\n";
 	cout << "-----------------\n";
-	cout << "1) Xem thong tin cuoc thi.\n"; //Done
-	cout << "2) Xem thong tin cac doi thi.\n"; //Done
-	cout << "3) Xem top 3 doi thi.\n"; //Done
-	cout << "4) Dang ky tham gia.\n"; //Done
-	cout << "5) Kiem tra nhom X da tham gia chua.\n"; //Done
-	cout << "6) Quan ly nhom.\n"; //Done
+	cout << "Status: ";
+	if (this->event.isStarted())
+		cout << "started\n";
+	else
+		cout << "stopped\n";
+	cout << "1) Xem thong tin cuoc thi.\n";
+	cout << "2) Xem thong tin cac doi thi.\n";
+	cout << "3) Xem top 3 doi thi.\n";
+	cout << "4) Dang ky tham gia.\n"; 
+	cout << "5) Kiem tra nhom X da tham gia chua.\n"; 
+	cout << "6) Quan ly nhom.\n";
 	cout << "0) Thoat.\n\n";
 	cout << "Nhap lua chon cua ban: ";
 }
@@ -92,6 +98,7 @@ void Menu::adminPanel() //still working on
 			break;
 
 		case 2:
+		{
 			char tenDoi[100];
 			unsigned int diem;
 
@@ -100,6 +107,8 @@ void Menu::adminPanel() //still working on
 				cout << "Danh sach rong!\n";
 				return;
 			}
+
+			this->event.xuatTenDoiThi();
 
 			cin.ignore();
 			do
@@ -114,11 +123,31 @@ void Menu::adminPanel() //still working on
 			cout << "Nhap so diem: ";
 			cin >> diem;
 
-			event.setDiemChoDoi(tenDoi, diem);
+			this->event.setDiemChoDoi(tenDoi, diem);
 			break;
+		}
 
 		case 3: //Xoa doi X
+		{
+			this->event.xuatTenDoiThi();
+			cout << endl;
+			char tenDoiToRemove[100];
+
+			cin.ignore();
+
+			do
+			{
+				cout << "Nhap ten doi can xoa (0 to exit): ";
+				cin.getline(tenDoiToRemove, 100);
+
+				if (strcmp(tenDoiToRemove, "0") == 0)
+					return;
+			} while (!event.isXRegistered(tenDoiToRemove));
+
+			this->event.removeDoi(tenDoiToRemove);
+
 			break;
+		}
 
 		case 4:
 			this->event.display();
@@ -129,8 +158,28 @@ void Menu::adminPanel() //still working on
 			break;
 
 		case 6:
-			//Quan Ly Doi Thi
+		{
+			this->event.xuatTenDoiThi();
+			cout << endl;
+			cin.ignore();
+
+			char tenDoiToEdit[100];
+
+			do
+			{
+				cout << "Nhap ten doi can edit (0 to exit): ";
+				cin.getline(tenDoiToEdit, 100);
+
+				if (strcmp(tenDoiToEdit, "0") == 0)
+					return;
+			} while (!event.isXRegistered(tenDoiToEdit));
+
+			NodeDoiThi* doiThi = this->event.getDoiThiTrongList(tenDoiToEdit);
+
+			this->leaderPanel_(doiThi);
+
 			break;
+		}
 
 		default:
 			exit = 1;
@@ -140,6 +189,92 @@ void Menu::adminPanel() //still working on
 		system("pause");
 		system("cls");
 	} while (!exit);
+}
+
+void Menu::leaderPanel_(NodeDoiThi*& doiThi)
+{
+	bool exit = 0;
+	int iChoice;
+
+	do
+	{
+
+		displayLeaderPanel();
+		cin >> iChoice;
+		cin.ignore();
+		switch (iChoice)
+		{
+		case 1: //Doi ten nhom
+		{
+			char initTenDoi[100], initTenDoi2[100];
+			cout << "Nhap ten doi moi: ";
+			cin.getline(initTenDoi, 100);
+			cout << "Nhap lai ten doi moi: ";
+			cin.getline(initTenDoi2, 100);
+			if (strcmp(initTenDoi, initTenDoi2) != 0)
+				cout << "Ten doi khong trung khop!" << endl;
+			else
+				strcpy_s(doiThi->cTenDoiThi, initTenDoi);
+			break;
+		}
+
+		case 2:
+			doiThi->ltvThanhVien.xuatThanhVien();
+			break;
+
+		case 3: //Xoa thanh vien
+		{
+			char memberToRemove[100];
+			cout << "Nhap ten thanh vien can xoa: ";
+			cin.getline(memberToRemove, 100);
+			if (!this->event.isMemberRegistered(doiThi, memberToRemove))
+				cout << "Ten thanh vien khong hop le!";
+			doiThi->ltvThanhVien.removeThanhVien(memberToRemove);
+			break;
+		}
+
+		case 4: //Them thanh vien
+		{
+			char memberToAdd[100];
+			cout << "Nhap ten thanh vien can them: ";
+			cin.getline(memberToAdd, 100);
+			if (this->event.isMemberRegistered(doiThi, memberToAdd))
+			{
+				cout << "Thanh vien da dang ky!" << endl;
+				break;
+			}
+			doiThi->ltvThanhVien.addTailThanhVien(doiThi->ltvThanhVien.createNodeThanhVien(memberToAdd));
+			break;
+		}
+
+		case 5: //Doi mat khau
+		{
+			char newPassword[100], newPasswordConfirm[100], oldPassword[100];
+			cout << "Nhap password hien tai: ";
+			cin.getline(oldPassword, 100);
+			if (strcmp(doiThi->cPassDoiTruong, oldPassword) != 0)
+			{
+				cout << "Sai" << endl;
+				break;
+			}
+
+			cout << "Nhap password moi: ";
+			cin.getline(newPassword, 100);
+			cout << "Nhap lai password moi: ";
+			cin.getline(newPasswordConfirm, 100);
+			if (strcmp(newPassword, newPasswordConfirm) != 0)
+				cout << "Password khong trung khop!" << endl;
+			else
+				strcpy_s(doiThi->cPassDoiTruong, newPassword);
+			break;
+		}
+
+		default:
+			exit = 1;
+			break;
+		}
+		enterToContinue();
+	} while (exit == 0);
 }
 
 void Menu::leaderPanel() //Done
@@ -177,74 +312,9 @@ void Menu::leaderPanel() //Done
 
 	system("cls");
 
-	bool exit = 0;
-	int iChoice;
-
 	NodeDoiThi* doiThi = this->event.getDoiThiTrongList(tenDoi);
 
-	do
-	{
-		enterToContinue();
-		displayLeaderPanel();
-		cin >> iChoice;
-		cin.ignore();
-		switch (iChoice)
-		{
-		case 1: //Doi ten nhom
-			char initTenDoi[100], initTenDoi2[100];
-			cout << "Nhap ten doi moi: ";
-			cin.getline(initTenDoi, 100);
-			cout << "Nhap lai ten doi moi: ";
-			cin.getline(initTenDoi2, 100);
-			if (strcmp(initTenDoi, initTenDoi2) != 0)
-				cout << "Ten doi khong trung khop!" << endl;
-			else
-				strcpy_s(doiThi->cTenDoiThi, initTenDoi);
-			break;
-
-		case 2:
-			doiThi->ltvThanhVien.xuatThanhVien();
-			break;
-
-		case 3: //Xoa thanh vien
-			char memberToRemove[100];
-			cout << "Nhap ten thanh vien can xoa: ";
-			cin.getline(memberToRemove, 100);
-			if (!this->event.isMemberRegistered(doiThi, memberToRemove))
-				cout << "Ten thanh vien khong hop le!";
-			doiThi->ltvThanhVien.removeThanhVien(memberToRemove);
-			break;
-
-		case 4: //Them thanh vien
-			char memberToAdd[100];
-			cout << "Nhap ten thanh vien can them: ";
-			cin.getline(memberToAdd, 100);
-			if (this->event.isMemberRegistered(doiThi, memberToAdd))
-			{
-				cout << "Thanh vien da dang ky!" << endl;
-				break;
-			}
-			doiThi->ltvThanhVien.addTailThanhVien(doiThi->ltvThanhVien.createNodeThanhVien(memberToAdd));
-			break;
-
-		case 5: //Doi mat khau
-			char newPassword[100], newPasswordConfirm[100];
-			cout << "Nhap password moi: ";
-			cin.getline(newPassword, 100);
-			cout << "Nhap lai password moi: ";
-			cin.getline(newPasswordConfirm, 100);
-			if (strcmp(newPassword, newPasswordConfirm) != 0)
-				cout << "Password khong trung khop!" << endl;
-			else
-				strcpy_s(doiThi->cPassDoiTruong, newPassword);
-			break;
-
-		default:
-			exit = 1;
-			break;
-		}
-
-	} while (exit == 0);
+	leaderPanel_(doiThi);
 }
 
 void Menu::eventEditor(bool& exit)
@@ -258,6 +328,7 @@ void Menu::eventEditor(bool& exit)
 	switch (iChoice)
 	{
 	case 1:
+	{
 		char tenCuocThi[100];
 
 		cout << "Nhap ten cuoc thi: ";
@@ -268,8 +339,10 @@ void Menu::eventEditor(bool& exit)
 		cout << "Set thanh cong!\n";
 
 		break;
+	}
 
 	case 2:
+	{
 		char nhaToChuc[100];
 
 		cout << "Nhap ten nha to chuc: ";
@@ -279,16 +352,20 @@ void Menu::eventEditor(bool& exit)
 		this->event.setTenNhaToChuc(nhaToChuc);
 		cout << "Set thanh cong!\n";
 		break;
+	}
 
 	case 3:
+	{
 		cout << "Nhap ngay to chuc:\n";
 		date.nhap();
 
 		this->event.setNgayToChuc(date);
 		cout << "Set thanh cong!\n";
 		break;
+	}
 
 	case 4:
+	{
 		unsigned long triGia;
 
 		cout << "Nhap tri gia: ";
@@ -297,8 +374,10 @@ void Menu::eventEditor(bool& exit)
 		this->event.setTriGiaGiaiThuong(triGia);
 		cout << "Set thanh cong!\n";
 		break;
+	}
 
 	case 5:
+	{
 		char Format[15];
 
 		cout << "Nhap format moi: ";
@@ -308,6 +387,7 @@ void Menu::eventEditor(bool& exit)
 		this->event.setFormat(Format);
 		cout << "Set thanh cong!\n";
 		break;
+	}
 
 	default:
 		exit = 1;
@@ -322,6 +402,7 @@ void Menu::setEvent(CTFEvent& event)
 
 void Menu::menu()
 {
+	thread *start = NULL;
 	enterToContinue();
 	int iChoice;
 	while (1)
@@ -349,6 +430,7 @@ void Menu::menu()
 			break;
 
 		case 5:
+		{
 			char cTenDoi[100];
 			cout << "Nhap ten doi can kiem tra: ";
 			cin.getline(cTenDoi, 100);
@@ -357,6 +439,7 @@ void Menu::menu()
 			else
 				cout << "Chua dang ky!\n";
 			break;
+		}
 
 		case 6:
 			this->leaderPanel();
@@ -365,6 +448,44 @@ void Menu::menu()
 		case 42069:
 			this->adminPanel();
 			break;
+
+		case 420:
+		{
+			char password[100], password_[] = "admin";
+			cout << "Nhap password: ";
+			cin.getline(password, 100);
+			if (strcmp(password, password_) != 0)
+				break;
+
+			if (this->event.isStarted())
+			{
+				cout << "Cuoc thi da duoc dien ra roi!" << endl;
+				break;
+			}
+
+			this->event.setStarted(1);
+			start = new thread(&CTFEvent::start, &this->event);
+			
+			break;
+		}
+
+		case 69:
+		{
+			char password[100], password_[] = "admin";
+			cout << "Nhap password: ";
+			cin.getline(password, 100);
+			if (strcmp(password, password_) != 0)
+				break;
+
+			if (!this->event.isStarted())
+			{
+				cout << "Khong co cuoc thi nao dang dien ra" << endl;
+				break;
+			}
+			this->event.setStarted(0);
+			start->join();
+			break;
+		}
 
 		case 0:
 			exit(0);

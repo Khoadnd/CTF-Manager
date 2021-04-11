@@ -10,6 +10,7 @@ private:
 	Date dNgayToChuc;
 	unsigned long ulTriGiaGiaiThuong;
 	char cFormat[100];
+	bool started;
 	ListDoiThi ldtListDoiThi;
 
 public:
@@ -26,11 +27,15 @@ public:
 	bool setTriGiaGiaiThuong(unsigned long);
 	void setFormat(char*);
 	void setDiemChoDoi(char*, unsigned int);
+	void setStarted(bool);
 	
 	void addDoiThi();
 	
 	void xuatDoiThi();
+	void xuatTenDoiThi();
 	void xuatTop3();
+
+	void removeDoi(char*);
 
 	int getSoLuongDoiThamGia();
 	char* getPassword(char*);
@@ -39,6 +44,10 @@ public:
 	bool isListDoiThiEmpty();
 	bool isFormat(char*);
 	bool isMemberRegistered(NodeDoiThi*, char*);
+	bool isStarted();
+
+	void start();
+	void stop();
 
 	NodeDoiThi* getDoiThiTrongList(char*);
 };
