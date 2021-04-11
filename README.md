@@ -52,6 +52,9 @@ Chương trình gồm 2 menu chính:
 >>    - Xóa thành viên
 >>    - Thêm thành viên
 >>    - Đổi mật khẩu
+
+##### Để bắt đầu cuộc thi, nhập __"420"__
+##### Để kết thúc cuộc thi, nhập __"69"__
         
 #### Admin Panel
 
