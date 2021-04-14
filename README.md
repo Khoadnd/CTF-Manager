@@ -49,7 +49,7 @@ Chương trình gồm có 2 menu:
 ## For admin
 
 Mật khẩu mặc định là: admin  
-Các option ở Main Menu:
+Các option ở __Main Menu__:
 
 | Lựa chọn | Công dụng |
 | -------- | --------- |
