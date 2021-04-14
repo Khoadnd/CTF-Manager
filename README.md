@@ -1,7 +1,9 @@
 # CTF Manager
 
 Chương trình quản lý __các__ cuộc thi __CTF__ và __Các__ đội thi/thành viên của đội thi trong __từng__ cuộc thi  
-_Bài tập OOP ngày 15/4/2021, chỉ sử dụng được cho windows do có `system("clear");` và `system("pause")`_
+_Bài tập OOP ngày 15/4/2021, chỉ sử dụng được cho windows do có `system("clear")` và `system("pause")`_  
+Quản lý tối đa _99_ cuộc thi CTF cùng lúc  
+
 ## Thành viên
 1. Đoàn Nguyễn Đăng Khoa - 20521463
 2. Trần Lê Đại Nghĩa - 20520252
