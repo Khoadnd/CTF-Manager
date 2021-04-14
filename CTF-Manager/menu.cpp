@@ -2,18 +2,41 @@
 
 #include <iostream>
 #include <thread>
+#include <vector>
 
 using namespace std;
 
-Menu::Menu(CTFEvent event)
+unsigned int Menu::uiCurrentEventID = 0;
+
+Menu::Menu(CTFEvent* initListEvent)
 {
-	this->event = event;
+	this->listEvent = initListEvent;
+	this->event = {};
+	this->iChoice = 0;
+	this->numberOfEvent = 1;
+}
+
+unsigned int Menu::getCurrentEventID()
+{
+	return this->uiCurrentEventID;
+}
+
+void Menu::setCurrentEventID(unsigned int ID)
+{
+	this->uiCurrentEventID = ID;
+}
+
+Menu::Menu()
+{
+	this->numberOfEvent = 0;
+	this->listEvent = nullptr;
+	this->event = {};
 	this->iChoice = 0;
 }
 
 Menu::~Menu()
 {
-
+	
 }
 
 void Menu::displayAdminPanel() //Done
@@ -55,11 +78,13 @@ void Menu::displayMainMenu() //Done
 	cout << "-----------------\n";
 	cout << "----Main menu----\n";
 	cout << "-----------------\n";
+	cout << "Ten cuoc thi: ";
+	puts(this->event.getTenCuocThi());
 	cout << "Status: ";
 	if (this->event.isStarted())
-		cout << "started\n";
+		cout << "Cuoc thi dang dien ra\n";
 	else
-		cout << "stopped\n";
+		cout << "Cuoc thi chua bat dau\n";
 	cout << "1) Xem thong tin cuoc thi.\n";
 	cout << "2) Xem thong tin cac doi thi.\n";
 	cout << "3) Xem top 3 doi thi.\n";
@@ -490,14 +515,147 @@ void Menu::menu()
 		}
 
 		case 0:
-			exit(0);
+			return;
 			break;
 
 		default:
-			cout << "Lua chon khong hop le!.\n";
-			break;
+			continue;
 		}
 
 		enterToContinue();
 	}
+}
+
+void Menu::display_menu()
+{
+	cout << "-----------------------\n";
+	cout << "----Welcome to CTF!----\n";
+	cout << "-----------------------\n";
+	cout << "1) Dang ky them cuoc thi\n";
+	cout << "2) Huy cuoc thi\n";
+	cout << "3) Xem cac cuoc thi dang dien ra\n";
+	cout << "4) Xem top 3 cuoc thi co so luong tham gia dong nhat!\n";
+	cout << "5) Xem cuoc thi, dang ky tham gia, tham gia\n";
+	cout << "0) Thoat khoi chuong trinh\n\n";
+	cout << "Nhap lua chon cua ban: ";
+}
+
+void Menu::displayEvent()
+{
+	for (int i = 0; i < this->numberOfEvent; i++)
+	{
+		cout << "(ID: " << i << ")" << endl;
+		puts(this->listEvent[i].getTenCuocThi());
+		cout << "----------------" << endl;
+	}
+}
+
+void Menu::_menu()
+{
+	system("cls");
+	int iChoice = 0;
+	bool exit = 0;
+	do
+	{
+		this->display_menu();
+		cin >> iChoice;
+		cin.ignore();
+
+		switch (iChoice)
+		{
+
+		case 1:
+		{
+			// AUTH
+			char _Password[] = "init", password[10];
+			cout << "Nhap mat khau da duoc cung cap: ";
+			cin.getline(password, 10);
+			if (strcmp(_Password, password) != 0)
+				break;
+			// ENDAUTH
+
+			this->listEvent[this->numberOfEvent].initEvent();
+
+			cout << "Da them event: " << endl;
+			this->listEvent[this->numberOfEvent++].display();
+			break;
+		}
+
+		case 2:
+		{
+			// AUTH
+			char _Password[] = "admin", password[10];
+			cout << "Nhap mat khau da duoc cung cap: ";
+			cin.getline(password, 10);
+			if (strcmp(_Password, password) != 0)
+				break;
+			// ENDAUTH
+
+			this->displayEvent();
+			int ID;
+			cout << "Nhap ID event can huy: ";
+			cin >> ID;
+			if (ID > this->listEvent->getSoLuongCuocThi() - 1)
+			{
+				cout << "Khong hop le!" << endl;
+				break;
+			}
+
+			this->listEvent[ID] = this->listEvent[this->listEvent->getSoLuongCuocThi() + 1];
+			this->numberOfEvent--;
+			break;
+		}
+
+		case 3:
+			this->displayEvent();
+
+			break;
+
+		case 4:
+			for (int i = 0; i < this->numberOfEvent - 1; i++)
+			{
+				CTFEvent max = this->listEvent[i];
+				for (int j = i + 1; j < this->numberOfEvent; j++)
+					if (this->listEvent[j].getSoLuongDoiThamGia() > max.getSoLuongDoiThamGia())
+						max = this->listEvent[j];
+				swap(max, this->listEvent[i]);
+			}
+
+			cout << "--------------------\n";
+			this->listEvent[0].display();
+			cout << "--------------------\n";
+			this->listEvent[1].display();
+			cout << "--------------------\n";
+			this->listEvent[2].display();
+			cout << "--------------------\n";
+			break;
+
+		case 5:
+		{
+			this->displayEvent();
+
+			int ID;
+			cout << "Nhap ID cuoc thi: ";
+			cin >> ID;
+			if (ID > this->listEvent->getSoLuongCuocThi() - 1)
+			{
+				cout << "Khong hop le!" << endl;
+				break;
+			}
+			this->event = this->listEvent[ID];
+			this->menu();
+
+			break;
+		}
+
+		case 0:
+			exit = 1;
+			break;
+
+		default:
+			break;
+		}
+
+		enterToContinue();
+	} while (!exit);
 }

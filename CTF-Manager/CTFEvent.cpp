@@ -5,6 +5,8 @@
 
 using namespace std;
 
+unsigned int CTFEvent::uiSoluongCuocThi = 1;
+
 CTFEvent::CTFEvent()
 {
 	strcpy_s(cTenCuocThi, "");
@@ -13,11 +15,12 @@ CTFEvent::CTFEvent()
 	dNgayToChuc.setDate();
 	ulTriGiaGiaiThuong = 0;
 	started = 0;
+	soLuongThamGia = 0;
 }
 
 CTFEvent::~CTFEvent()
 {
-	
+	uiSoluongCuocThi--;
 }
 
 void CTFEvent::display()
@@ -31,6 +34,7 @@ void CTFEvent::display()
 	cout << "Giai thuong: " << this->ulTriGiaGiaiThuong << endl;
 	cout << "Format: ";
 	puts(this->cFormat);
+	cout << "So luong doi tham gia: " << this->soLuongThamGia << endl;
 }
 
 void CTFEvent::setEvent(char* initTenCuocThi, char* initTenNhaToChuc, Date initDate, unsigned long initTriGiaGiaiThuong, char* initFormat)
@@ -51,8 +55,14 @@ bool CTFEvent::isFormat(char* Format)
 	return 0;
 }
 
+unsigned int CTFEvent::getSoLuongCuocThi()
+{
+	return this->uiSoluongCuocThi;
+}
+
 void CTFEvent::initEvent()
 {
+	this->uiSoluongCuocThi++;
 	char initTenCuocThi[100], initTenNhaToChuc[100], initFormat[15];
 	Date initNgayToChuc;
 	unsigned long initTriGia;
@@ -129,6 +139,7 @@ bool CTFEvent::setTriGiaGiaiThuong(unsigned long initTriGiaGiaiThuong)
 void CTFEvent::addDoiThi()
 {
 	this->ldtListDoiThi.nhapDoiThi();
+	this->soLuongThamGia++;
 }
 
 void CTFEvent::xuatDoiThi()
@@ -220,6 +231,7 @@ void CTFEvent::xuatTenDoiThi()
 void CTFEvent::removeDoi(char* tenDoi)
 {
 	this->ldtListDoiThi.removeDoi(tenDoi);
+	this->soLuongThamGia--;
 }
 
 bool CTFEvent::isStarted()
@@ -250,4 +262,14 @@ void CTFEvent::stop()
 void CTFEvent::setStarted(bool state)
 {
 	this->started = state;
+}
+
+char* CTFEvent::getTenCuocThi()
+{
+	return this->cTenCuocThi;
+}
+
+void CTFEvent::setSoLuongCuocThi(unsigned int initSoLuong)
+{
+	this->uiSoluongCuocThi = initSoLuong;
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "CTFEvent.h"
 #include "menu.h"
 
@@ -6,14 +7,25 @@ using namespace std;
 
 int main()
 {
-	CTFEvent event;
+	CTFEvent* event = new CTFEvent[100];
 
-	event.initEvent();
-	event.display();
+	//CTFEvent event;
+
+	//event.initEvent();
+	//event.display();
+
+	cout << "Please initialize atleast 1 event!" << endl;
+	event[0].initEvent();
+
+	system("pause");
 
 	Menu* menu = new Menu(event);
 
-	menu->menu();
+	menu->_menu();
+
+	//Menu* menu = new Menu(&event[0]);
+
+	//menu->menu();
 
 	return 0;
 }

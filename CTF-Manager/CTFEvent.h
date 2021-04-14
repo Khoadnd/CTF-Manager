@@ -12,6 +12,8 @@ private:
 	char cFormat[100];
 	bool started;
 	ListDoiThi ldtListDoiThi;
+	static unsigned int uiSoluongCuocThi;
+	unsigned int soLuongThamGia;
 
 public:
 	CTFEvent();
@@ -39,6 +41,7 @@ public:
 
 	int getSoLuongDoiThamGia();
 	char* getPassword(char*);
+	char* getTenCuocThi();
 
 	bool isXRegistered(char *);
 	bool isListDoiThiEmpty();
@@ -50,5 +53,8 @@ public:
 	void stop();
 
 	NodeDoiThi* getDoiThiTrongList(char*);
+
+	unsigned int getSoLuongCuocThi();
+	void setSoLuongCuocThi(unsigned int);
 };
 
