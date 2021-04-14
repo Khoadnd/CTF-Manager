@@ -61,12 +61,23 @@ Các option ở __Main Menu__:
 
 | Choice | Function                                              |
 | ------ | ----------------------------------------------------- |
-| 1      | Chỉnh sửa cuộc thi (Tên cuộc thi, nhà tài trợ...)     |
+| 1      | Chỉnh sửa cuộc thi (truy cập tới Event Editor)        |
 | 2      | Set điểm cho đội X                                    |
 | 3      | Xóa đội thi X                                         |
 | 4      | Xem thông tin cuộc thi                                |
 | 5      | Xem danh sách các đội thi trong cuộc thi              |
 | 6      | Quản lý đội thi X (Tương tự leaderPanel)              |
+| 0      | Quay lại Main Menu                                    |
+
+### Event Editor
+
+| Choice | Function                                              |
+| ------ | ----------------------------------------------------- |
+| 1      | Đổi tên cuộc thi                                      |
+| 2      | Đổi tên nhà tổ chức                                   |
+| 3      | Đổi ngày tổ chức                                      |
+| 4      | Thay đổi trị giá giải thưởng                          |
+| 5      | Thay đổi format                                       |
 | 0      | Quay lại Main Menu                                    |
 
 ## For team leader
